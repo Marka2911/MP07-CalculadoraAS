@@ -34,6 +34,8 @@ fun PantallaPrincipal() {
         var inputText by remember { mutableStateOf("") }
         var resultat by remember { mutableStateOf(0.0) }
         var memoria by remember { mutableStateOf(0.0)}
+        var numNow by remember { mutableStateOf("") }
+        var numReset by remember { mutableStateOf("") }
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -75,7 +77,7 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { inputText = "" },
+                        onClick = { inputText = ""  },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -107,8 +109,11 @@ fun PantallaPrincipal() {
                         Text(text = "rM", fontSize = 35.sp)
                     }
                     Button(
-                    onClick = { inputText += " / "
-                              memoria = 0.0},
+                    onClick = {
+                        numNow = numReset
+                        numReset = ""
+                        inputText += " / "
+                        memoria = 0.0},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -125,7 +130,8 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { inputText += "1"},
+                        onClick = { inputText += "1"
+                            numReset += "1"},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -134,7 +140,8 @@ fun PantallaPrincipal() {
                         Text(text = "1", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { inputText += "2" },
+                        onClick = { inputText += "2"
+                            numReset += "2"},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -143,7 +150,8 @@ fun PantallaPrincipal() {
                         Text(text = "2", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { inputText += "3" },
+                        onClick = { inputText += "3"
+                            numReset += "3"},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -152,7 +160,10 @@ fun PantallaPrincipal() {
                         Text(text = "3", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { inputText += " * "  },
+                        onClick = {
+                            numNow = numReset
+                            numReset = ""
+                            inputText += " * "  },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -169,7 +180,8 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { inputText += "4" },
+                        onClick = {numReset += "4"
+                            inputText += "4" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -178,7 +190,8 @@ fun PantallaPrincipal() {
                         Text(text = "4", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { inputText += "5" },
+                        onClick = { numReset += "5"
+                            inputText += "5" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -187,7 +200,9 @@ fun PantallaPrincipal() {
                         Text(text = "5", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { inputText += "6" },
+                        onClick = {
+                            numReset += "6"
+                            inputText += "6" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -197,6 +212,8 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
+                            numNow = numReset
+                            numReset = ""
                             inputText += " + "
                                   },
                         modifier = Modifier
@@ -215,7 +232,8 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { inputText += "7" },
+                        onClick = { numReset += "7"
+                            inputText += "7" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -224,7 +242,9 @@ fun PantallaPrincipal() {
                         Text(text = "7", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { inputText += "8" },
+                        onClick = {
+                            numReset += "8"
+                            inputText += "8" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -233,7 +253,8 @@ fun PantallaPrincipal() {
                         Text(text = "8", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { inputText += "9" },
+                        onClick = { numReset += "9"
+                            inputText += "9" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -242,7 +263,9 @@ fun PantallaPrincipal() {
                         Text(text = "9", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = {  inputText += " - " },
+                        onClick = {  numNow = numReset
+                            numReset = ""
+                            inputText += " - " },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -259,7 +282,8 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { inputText += "0" },
+                        onClick = { numReset += "0"
+                            inputText += "0" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(2f)
@@ -270,10 +294,17 @@ fun PantallaPrincipal() {
                     Button(
                         onClick = {
 
-                            if (!inputText.contains('.'))
-                                inputText += "."
+                            if (numReset.isEmpty())
+                            {
+                                numReset = "0."
+                                inputText += "0."
+                            }
 
-                                  },
+                            else if (!numReset.contains("."))
+                            {
+                                numReset += "."
+                                inputText += "."
+                            } },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
