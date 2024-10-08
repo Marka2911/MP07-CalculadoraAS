@@ -36,24 +36,33 @@ fun PantallaPrincipal() {
         var memoria by remember { mutableStateOf(0.0)}
         var numNow by remember { mutableStateOf("") }
         var operador by remember { mutableStateOf("") }
-        fun Operacions(){
-            if(numNow.isNotEmpty() && operador.isNotEmpty()){
+        fun Operacions() {
+            if (numNow.isNotEmpty()) {
                 val segonNombre = numNow.toDouble()
-                if (operador == "+")
-                    resultat += segonNombre
-                if (operador == "-")
-                    resultat -= segonNombre
-                if (operador == "*")
-                    resultat *= segonNombre
-                if (operador == "/") {
-                    if (segonNombre != 0.0)
-                        resultat /= segonNombre
+
+                if (resultat == 0.0 && operador.isEmpty()) {
+                    resultat = segonNombre
+                } else {
+                    if (operador == "+") {
+                        resultat += segonNombre
+                    } else if (operador == "-") {
+                        resultat -= segonNombre
+                    } else if (operador == "*") {
+                        resultat *= segonNombre
+                    } else if (operador == "/") {
+                        if (segonNombre != 0.0) {
+                            resultat /= segonNombre
+                        }
+                    }
                 }
+
                 numNow = ""
-                inputText = resultat.toString()
                 operador = ""
+                inputText = resultat.toString()
             }
         }
+
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -120,9 +129,10 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-                            if (memoria != 0.0)
-                                inputText += memoria
-                                  },
+                            if (memoria != 0.0) {
+                            inputText += memoria.toString()
+                            numNow = memoria.toString()
+                        }},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -131,11 +141,15 @@ fun PantallaPrincipal() {
                         Text(text = "rM", fontSize = 35.sp)
                     }
                     Button(
-                    onClick = {
-                        numNow = numReset
-                        numReset = ""
-                        inputText += " / "
-                        memoria = 0.0},
+                        onClick = {
+                            if (numNow.isNotEmpty()) {
+                                Operacions()
+                            }
+                            if (operador.isEmpty()) {
+                                operador = "/"
+                                inputText += " / "
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -153,7 +167,7 @@ fun PantallaPrincipal() {
                 ) {
                     Button(
                         onClick = { inputText += "1"
-                            numReset += "1"},
+                            numNow += "1"},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -163,7 +177,7 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = { inputText += "2"
-                            numReset += "2"},
+                            numNow += "2"},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -173,7 +187,7 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = { inputText += "3"
-                            numReset += "3"},
+                            numNow += "3"},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -183,12 +197,14 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-
-                            if(numNow.isNotEmpty()){
-                                ferOperacio()
-                                operador = *
-                                        inputText+= " * "
-                            }  },
+                            if (numNow.isNotEmpty()) {
+                                Operacions()
+                            }
+                            if (operador.isEmpty()) {
+                                operador = "*"
+                                inputText += " * "
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -205,7 +221,7 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = {numReset += "4"
+                        onClick = {numNow += "4"
                             inputText += "4" },
                         modifier = Modifier
                             .fillMaxSize()
@@ -215,7 +231,7 @@ fun PantallaPrincipal() {
                         Text(text = "4", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { numReset += "5"
+                        onClick = { numNow += "5"
                             inputText += "5" },
                         modifier = Modifier
                             .fillMaxSize()
@@ -226,7 +242,7 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-                            numReset += "6"
+                            numNow += "6"
                             inputText += "6" },
                         modifier = Modifier
                             .fillMaxSize()
@@ -237,11 +253,15 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-                            numNow = numReset
-                            var result = Suma(numNow.toDouble(),numReset.toDouble())
-                            numReset = ""
-                            inputText += " + "
-                                  },
+                            if (numNow.isNotEmpty()) {
+                                Operacions()
+                            }
+                            // Only set the operator if it is not already set
+                            if (operador.isEmpty()) {
+                                operador = "+"
+                                inputText += " + "
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -258,7 +278,7 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { numReset += "7"
+                        onClick = { numNow += "7"
                             inputText += "7" },
                         modifier = Modifier
                             .fillMaxSize()
@@ -269,7 +289,7 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-                            numReset += "8"
+                            numNow += "8"
                             inputText += "8" },
                         modifier = Modifier
                             .fillMaxSize()
@@ -279,7 +299,7 @@ fun PantallaPrincipal() {
                         Text(text = "8", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = { numReset += "9"
+                        onClick = { numNow += "9"
                             inputText += "9" },
                         modifier = Modifier
                             .fillMaxSize()
@@ -289,9 +309,15 @@ fun PantallaPrincipal() {
                         Text(text = "9", fontSize = 60.sp)
                     }
                     Button(
-                        onClick = {  numNow = numReset
-                            numReset = ""
-                            inputText += " - " },
+                        onClick = {
+                            if (numNow.isNotEmpty()) {
+                                Operacions()
+                            }
+                            if (operador.isEmpty()) {
+                                operador = "-"
+                                inputText += " - "
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -308,7 +334,7 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { numReset += "0"
+                        onClick = { numNow += "0"
                             inputText += "0" },
                         modifier = Modifier
                             .fillMaxSize()
@@ -319,18 +345,15 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-
-                            if (numReset.isEmpty())
-                            {
-                                numReset = "0."
+                            if (!numNow.contains(".")) {
+                            if (numNow.isEmpty()) {
+                                numNow = "0."
                                 inputText += "0."
-                            }
-
-                            else if (!numReset.contains("."))
-                            {
-                                numReset += "."
+                            } else {
+                                numNow += "."
                                 inputText += "."
-                            } },
+                            }
+                        }},
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -340,8 +363,9 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-                            resultat = Operacions(inputText)
-                            inputText = "$resultat"
+                            Operacions() // Final calculation
+                            numNow = "" // Clear current input after calculation
+                            operador = ""
                         },
                         modifier = Modifier
                             .fillMaxSize()
