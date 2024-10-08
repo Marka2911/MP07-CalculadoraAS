@@ -19,7 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextAlign
-import cat.insmontilivi.calculadora.componibles.Operacions
+
 /*c esborra tot, la , nomes es pot introduir una sola , dins d'un nombre, i el igual cada vegada que fiques un = es va repetint la mateixa operacio*/
 @Preview(showBackground = true,
     heightDp = 850,
@@ -35,7 +35,25 @@ fun PantallaPrincipal() {
         var resultat by remember { mutableStateOf(0.0) }
         var memoria by remember { mutableStateOf(0.0)}
         var numNow by remember { mutableStateOf("") }
-        var numReset by remember { mutableStateOf("") }
+        var operador by remember { mutableStateOf("") }
+        fun Operacions(){
+            if(numNow.isNotEmpty() && operador.isNotEmpty()){
+                val segonNombre = numNow.toDouble()
+                if (operador == "+")
+                    resultat += segonNombre
+                if (operador == "-")
+                    resultat -= segonNombre
+                if (operador == "*")
+                    resultat *= segonNombre
+                if (operador == "/") {
+                    if (segonNombre != 0.0)
+                        resultat /= segonNombre
+                }
+                numNow = ""
+                inputText = resultat.toString()
+                operador = ""
+            }
+        }
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -77,7 +95,11 @@ fun PantallaPrincipal() {
                         .weight(1f)
                 ) {
                     Button(
-                        onClick = { inputText = ""  },
+                        onClick = {
+                            inputText = ""
+                            numNow = ""
+                            resultat = 0.0
+                            operador = "" },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -161,9 +183,12 @@ fun PantallaPrincipal() {
                     }
                     Button(
                         onClick = {
-                            numNow = numReset
-                            numReset = ""
-                            inputText += " * "  },
+
+                            if(numNow.isNotEmpty()){
+                                ferOperacio()
+                                operador = *
+                                        inputText+= " * "
+                            }  },
                         modifier = Modifier
                             .fillMaxSize()
                             .weight(1f)
@@ -213,6 +238,7 @@ fun PantallaPrincipal() {
                     Button(
                         onClick = {
                             numNow = numReset
+                            var result = Suma(numNow.toDouble(),numReset.toDouble())
                             numReset = ""
                             inputText += " + "
                                   },
